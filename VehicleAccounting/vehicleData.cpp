@@ -7,7 +7,7 @@ enum
 	BRAND,
 	MODEL,
 	YEAR,
-	WEIGHT
+	WEIGHT   
 };
 
 pugi::xml_document doc;
