@@ -7,7 +7,7 @@ enum
 	BRAND,
 	MODEL,
 	YEAR,
-	WEIGHT   
+	WEIGHT
 };
 
 pugi::xml_document doc;
@@ -16,6 +16,7 @@ void VehicleData::generateId()
 {
 	pugi::xpath_node xpathNode = doc.select_node("VehiclesData");
 	pugi::xml_node selectedNode = xpathNode.node();
+	pugi::xml_node selectedNode1 = xpathNode.node();
 
 	for (pugi::xml_node nodeId = selectedNode.first_child(); nodeId; nodeId = nodeId.next_sibling())
 	{
