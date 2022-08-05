@@ -30,6 +30,7 @@ uint32_t main()
 		cin >> fileName;
 
 		uint32_t exit = true;
+		uint32_t exit1 = true;
 		while (exit == 1)
 		{
 			uint32_t action;
