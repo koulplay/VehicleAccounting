@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<VehiclesData>
+  <VehicleData>
+    <Id>0</Id>
+    <Type>123</Type>
+    <Brand>123</Brand>
+    <Model>123</Model>
+    <Year>123</Year>
+    <Weight>123,000000</Weight>
+  </VehicleData>
+  <VehicleData>
+    <Id>1</Id>
+    <Type>321</Type>
+    <Brand>321</Brand>
+    <Model>321</Model>
+    <Year>321</Year>
+    <Weight>321,000000</Weight>
+  </VehicleData>
+</VehiclesData>

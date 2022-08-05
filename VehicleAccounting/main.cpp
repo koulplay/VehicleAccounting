@@ -88,14 +88,7 @@ void addNewVehicleData()
 	cin >> weight;
 
 	VehicleData *vehicle = new VehicleData;
-	vehicle->setType(type);
-	vehicle->setBrand(brand);
-	vehicle->setModel(model);
-	vehicle->setYear(year);
-	vehicle->setWeight(weight);
-
-	vehicle->save(fileName);
-
+	vehicle->save(fileName, type, brand, model, year, weight);
 	delete vehicle;
 }
 
@@ -108,12 +101,13 @@ void updateVehicleData()
 	uint32_t year;
 	double weight;
 
-	VehicleData *vehicle = new VehicleData;
+	
 
 	cout << "Введите идентификатор транспорного средства для изменения данных: ";
 	cin >> id;
 
 	cout << endl << "Текущие данные:" << endl << endl;
+	VehicleData *vehicle = new VehicleData;
 	vehicle->getVehicleDataById(id, fileName);
 
 	cout << endl << "Введите новые данные:" << endl << endl;
@@ -130,15 +124,7 @@ void updateVehicleData()
 	cin >> weight;
 
 
-	vehicle->setId(id);
-	vehicle->setType(type);
-	vehicle->setBrand(brand);
-	vehicle->setModel(model);
-	vehicle->setYear(year);
-	vehicle->setWeight(weight);
-
-	vehicle->update(fileName);
-
+	vehicle->update(id, fileName, type, brand, model, year, weight);
 	delete vehicle;
 }
 
@@ -149,32 +135,11 @@ void removeVehicleData()
 	cin >> id;
 
 	VehicleData *vehicle = new VehicleData;
-	vehicle->setId(id);
-
 	vehicle->remove(id, fileName);
-
 	delete vehicle;
 }
 
 void loadByFieldVehicleData()
-{
-	uint32_t sortType;
-	cout << "Выберите поле для сортировки данных транспортных средств:" << endl << endl;
-	cout << "1. ID)" << endl
-		<< "2. Тип" << endl
-		<< "3. Бренд" << endl
-		<< "4. Модель" << endl
-		<< "5. Год" << endl
-		<< "6. Вес" << endl;
-	cin >> sortType;
-
-	VehicleData *vehicle = new VehicleData;
-	vehicle->loadByField(sortType, fileName);
-
-	delete vehicle;
-}
-
-void searchByFieldVehicleData()
 {
 	uint32_t sortType;
 	cout << "Выберите поле для сортировки данных транспортных средств:" << endl << endl;
@@ -186,12 +151,29 @@ void searchByFieldVehicleData()
 		<< "6. Вес" << endl;
 	cin >> sortType;
 
+	VehicleData *vehicle = new VehicleData;
+	vehicle->loadByField(sortType, fileName);
+	delete vehicle;
+}
+
+void searchByFieldVehicleData()
+{
 	string searchWord;
+	uint32_t sortType;
+
+	cout << "Выберите поле для сортировки данных транспортных средств:" << endl << endl;
+	cout << "1. ID" << endl
+		<< "2. Тип" << endl
+		<< "3. Бренд" << endl
+		<< "4. Модель" << endl
+		<< "5. Год" << endl
+		<< "6. Вес" << endl;
+	cin >> sortType;
+
 	cout << "Введите слово: ";
 	cin >> searchWord;
 
 	VehicleData *vehicle = new VehicleData;
 	vehicle->searchByField(sortType, fileName, searchWord);
-
 	delete vehicle;
 }

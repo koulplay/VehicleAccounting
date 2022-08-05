@@ -111,7 +111,7 @@ void VehicleData::getVehicleDataById(uint32_t id, string fileName)
 		cout << "Файл не найден" << endl;
 }
 
-void VehicleData::save(string fileName)
+void VehicleData::save(string fileName, string type, string brand, string model, uint32_t year, double weight)
 {
 	pugi::xml_node nodeVehiclesData;
 	pugi::xml_node nodeVehicleData;
@@ -142,36 +142,36 @@ void VehicleData::save(string fileName)
 	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(to_string(id_).c_str());
 
 	childrenNodesVehicleData = nodeVehicleData.append_child("Type");
-	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(type_.c_str());
+	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(type.c_str());
 
 	childrenNodesVehicleData = nodeVehicleData.append_child("Brand");
-	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(brand_.c_str());
+	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(brand.c_str());
 
 	childrenNodesVehicleData = nodeVehicleData.append_child("Model");
-	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(model_.c_str());
+	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(model.c_str());
 
 	childrenNodesVehicleData = nodeVehicleData.append_child("Year");
-	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(to_string(year_).c_str());
+	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(to_string(year).c_str());
 
 	childrenNodesVehicleData = nodeVehicleData.append_child("Weight");
-	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(to_string(weight_).c_str());
+	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(to_string(weight).c_str());
 
 	doc.save_file(fileName.c_str(), PUGIXML_TEXT("  "));
 
 	cout << "Данные успешно добавлены в файл " << fileName << endl;
 }
 
-void VehicleData::update(string fileName)
+void VehicleData::update(uint32_t id, string fileName, string type, string brand, string model, uint32_t year, double weight)
 {
 	if (doc.load_file(fileName.c_str()))
 	{
-		pugi::xml_node nodeToUpdate = nodeFinder(id_);
+		pugi::xml_node nodeToUpdate = nodeFinder(id);
 
-		nodeToUpdate.child("Type").first_child().set_value(type_.c_str());
-		nodeToUpdate.child("Brand").first_child().set_value(brand_.c_str());
-		nodeToUpdate.child("Model").first_child().set_value(model_.c_str());
-		nodeToUpdate.child("Year").first_child().set_value(to_string(year_).c_str());
-		nodeToUpdate.child("Weight").first_child().set_value(to_string(weight_).c_str());
+		nodeToUpdate.child("Type").first_child().set_value(type.c_str());
+		nodeToUpdate.child("Brand").first_child().set_value(brand.c_str());
+		nodeToUpdate.child("Model").first_child().set_value(model.c_str());
+		nodeToUpdate.child("Year").first_child().set_value(to_string(year).c_str());
+		nodeToUpdate.child("Weight").first_child().set_value(to_string(weight).c_str());
 
 		doc.save_file(fileName.c_str(), PUGIXML_TEXT("  "));
 
@@ -196,13 +196,9 @@ void VehicleData::remove(uint32_t id, string fileName)
 		cout << "Файл не найден" << endl;
 }
 
-void test()
+vector<VehicleData> loadVehicleData()
 {
-
-}
-//Заполняет массив данными по скруктуре из файла
-vector<VehicleData> loadVehicleData(vector<VehicleData> vehicles)
-{
+	vector<VehicleData> vehicles;
 	VehicleData vehicleData;
 	pugi::xpath_node xpathNode = doc.select_node("VehiclesData");
 	pugi::xml_node selectedNode = xpathNode.node();
@@ -217,7 +213,6 @@ vector<VehicleData> loadVehicleData(vector<VehicleData> vehicles)
 		vehicleData.setWeight(node.child("Weight").text().as_double());
 
 		vehicles.push_back(vehicleData);
-
 	}
 	return vehicles;
 }
@@ -227,61 +222,40 @@ void VehicleData::loadByField(uint32_t sortType, string fileName)
 	if (doc.load_file(fileName.c_str()))
 	{
 		vector<VehicleData> vehicles;
-		vehicles = loadVehicleData(vehicles);
+		vehicles = loadVehicleData();
 
 		switch (sortType)
 		{
 		case ID:
 			cout << "Сортировка по ID:" << endl;
-			sort(vehicles.begin(), vehicles.end(), [](VehicleData &a, VehicleData &b)
-				{
-					return a.getId() < b.getId();
-				});
+			sort(vehicles.begin(), vehicles.end(), [](VehicleData &a, VehicleData &b) { return a.getId() < b.getId(); });
 			break;
 		case TYPE:
 			cout << "Сортировка по типу:" << endl;
-			sort(vehicles.begin(), vehicles.end(), [](VehicleData &a, VehicleData &b)
-				{
-					return a.getType() < b.getType();
-				});
+			sort(vehicles.begin(), vehicles.end(), [](VehicleData &a, VehicleData &b) { return a.getType() < b.getType(); });
 			break;
 		case BRAND:
 			cout << "Сортировка по бренду:" << endl;
-			sort(vehicles.begin(), vehicles.end(), [](VehicleData &a, VehicleData &b)
-				{
-					return a.getBrand() < b.getBrand();
-				});
+			sort(vehicles.begin(), vehicles.end(), [](VehicleData &a, VehicleData &b) { return a.getBrand() < b.getBrand(); });
 			break;
 		case MODEL:
 			cout << "Сортировка по модели:" << endl << endl;
-			sort(vehicles.begin(), vehicles.end(), [](VehicleData &a, VehicleData &b)
-				{
-					return a.getModel() < b.getModel();
-				});
+			sort(vehicles.begin(), vehicles.end(), [](VehicleData &a, VehicleData &b) { return a.getModel() < b.getModel(); });
 			break;
 		case YEAR:
 			cout << "Сортировка по году:" << endl;
-			sort(vehicles.begin(), vehicles.end(), [](VehicleData &a, VehicleData &b)
-				{
-					return a.getYear() < b.getYear();
-				});
+			sort(vehicles.begin(), vehicles.end(), [](VehicleData &a, VehicleData &b) { return a.getYear() < b.getYear(); });
 			break;
 		case WEIGHT:
 			cout << "Сортировка по весу:" << endl;
-			sort(vehicles.begin(), vehicles.end(), [](VehicleData &a, VehicleData &b)
-				{
-					return a.getWeight() < b.getWeight();
-				});
+			sort(vehicles.begin(), vehicles.end(), [](VehicleData &a, VehicleData &b) { return a.getWeight() < b.getWeight(); });
 			break;
 		default:
 			cout << "Поле отсутствует";
 			break;
 		}
-
-		for (uint32_t i = 0; i < vehicles.size(); i++)
-		{
-			cout << "ID: " << vehicles[i].getId() << " Тип: " << vehicles[i].getType() << " Бренд: " << vehicles[i].getBrand() << " Модель: " << vehicles[i].getModel() << " Год: " << vehicles[i].getYear() << " Вес: " << vehicles[i].getWeight() << endl;
-		}
+		for (auto &el : vehicles)
+			cout << "ID: " << el.id_ << " Тип: " << el.type_ << " Бренд: " << el.brand_ << " Модель: " << el.model_ << " Год: " << el.year_ << " Вес: " << el.weight_ << endl;
 	}
 	else
 		cout << "Файл не найден" << endl;
@@ -292,55 +266,35 @@ void VehicleData::searchByField(uint32_t sortType, string fileName, string searc
 {
 	if (doc.load_file(fileName.c_str()))
 	{
-
-		vector<VehicleData> vehicles;
-		vehicles = loadVehicleData(vehicles);
-		vector<VehicleData>::iterator data;
+		vector<VehicleData> allVehicles;
+		vector<VehicleData> sortVehicles;
+		allVehicles = loadVehicleData();
 		switch (sortType)
 		{
 		case ID:
-			data = find_if(vehicles.begin(), vehicles.end(), [&searchWord](VehicleData &a)
-				{
-					return to_string(a.getId()) == searchWord;
-				});
+			copy_if(allVehicles.begin(), allVehicles.end(), back_inserter(sortVehicles), [&searchWord](VehicleData &a) { return to_string(a.getId()) == searchWord; });
 			break;
 		case TYPE:
-			data = find_if(vehicles.begin(), vehicles.end(), [&searchWord](VehicleData &a)
-				{
-					return a.getType() == searchWord;
-				});
+			copy_if(allVehicles.begin(), allVehicles.end(), back_inserter(sortVehicles), [&searchWord](VehicleData &a) { return a.getType() == searchWord; });
 			break;
 		case BRAND:
-			data = find_if(vehicles.begin(), vehicles.end(), [&searchWord](VehicleData &a)
-				{
-					return a.getBrand() == searchWord;
-				});
+			copy_if(allVehicles.begin(), allVehicles.end(), back_inserter(sortVehicles), [&searchWord](VehicleData &a) { return a.getBrand() == searchWord; });
 			break;
 		case MODEL:
-			data = find_if(vehicles.begin(), vehicles.end(), [&searchWord](VehicleData &a)
-				{
-					return a.getModel() == searchWord;
-				});
+			copy_if(allVehicles.begin(), allVehicles.end(), back_inserter(sortVehicles), [&searchWord](VehicleData &a) { return a.getModel() == searchWord; });
 			break;
 		case YEAR:
-			data = find_if(vehicles.begin(), vehicles.end(), [&searchWord](VehicleData &a)
-				{
-					return to_string(a.getYear()) == searchWord;
-				});
+			copy_if(allVehicles.begin(), allVehicles.end(), back_inserter(sortVehicles), [&searchWord](VehicleData &a) { return to_string(a.getYear()) == searchWord; });
 			break;
 		case WEIGHT:
-			data = find_if(vehicles.begin(), vehicles.end(), [&searchWord](VehicleData &a)
-				{
-					return to_string(a.getWeight()) == searchWord;
-				});
+			copy_if(allVehicles.begin(), allVehicles.end(), back_inserter(sortVehicles), [&searchWord](VehicleData &a) { return to_string(a.getWeight()) == searchWord; });
 			break;
 		default:
 			cout << "Поле отсутствует";
 			break;
 		}
-
-		cout << "ID: " << data._Ptr->getId() << " Тип: " << data._Ptr->getType() << " Бренд: " << data._Ptr->getBrand() << " Модель: " << data._Ptr->getModel() << " Год: " << data._Ptr->getYear() << " Вес: " << data._Ptr->getWeight() << endl;
-
+		for (auto &el : sortVehicles)
+			cout << "ID: " << el.id_ << " Тип: " << el.type_ << " Бренд: " << el.brand_ << " Модель: " << el.model_ << " Год: " << el.year_ << " Вес: " << el.weight_ << endl;
 	}
 	else
 		cout << "Файл не найден" << endl;
