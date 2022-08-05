@@ -111,7 +111,7 @@ void VehicleData::getVehicleDataById(uint32_t id, string fileName)
 		cout << "Файл не найден" << endl;
 }
 
-void VehicleData::save(string fileName)
+void VehicleData::save(string fileName, string type, string brand, string model, uint32_t year, double weight)
 {
 	pugi::xml_node nodeVehiclesData;
 	pugi::xml_node nodeVehicleData;
@@ -142,36 +142,36 @@ void VehicleData::save(string fileName)
 	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(to_string(id_).c_str());
 
 	childrenNodesVehicleData = nodeVehicleData.append_child("Type");
-	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(type_.c_str());
+	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(type.c_str());
 
 	childrenNodesVehicleData = nodeVehicleData.append_child("Brand");
-	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(brand_.c_str());
+	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(brand.c_str());
 
 	childrenNodesVehicleData = nodeVehicleData.append_child("Model");
-	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(model_.c_str());
+	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(model.c_str());
 
 	childrenNodesVehicleData = nodeVehicleData.append_child("Year");
-	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(to_string(year_).c_str());
+	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(to_string(year).c_str());
 
 	childrenNodesVehicleData = nodeVehicleData.append_child("Weight");
-	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(to_string(weight_).c_str());
+	childrenNodesVehicleData.append_child(pugi::node_pcdata).set_value(to_string(weight).c_str());
 
 	doc.save_file(fileName.c_str(), PUGIXML_TEXT("  "));
 
 	cout << "Данные успешно добавлены в файл " << fileName << endl;
 }
 
-void VehicleData::update(string fileName)
+void VehicleData::update(uint32_t id, string fileName, string type, string brand, string model, uint32_t year, double weight)
 {
 	if (doc.load_file(fileName.c_str()))
 	{
-		pugi::xml_node nodeToUpdate = nodeFinder(id_);
+		pugi::xml_node nodeToUpdate = nodeFinder(id);
 
-		nodeToUpdate.child("Type").first_child().set_value(type_.c_str());
-		nodeToUpdate.child("Brand").first_child().set_value(brand_.c_str());
-		nodeToUpdate.child("Model").first_child().set_value(model_.c_str());
-		nodeToUpdate.child("Year").first_child().set_value(to_string(year_).c_str());
-		nodeToUpdate.child("Weight").first_child().set_value(to_string(weight_).c_str());
+		nodeToUpdate.child("Type").first_child().set_value(type.c_str());
+		nodeToUpdate.child("Brand").first_child().set_value(brand.c_str());
+		nodeToUpdate.child("Model").first_child().set_value(model.c_str());
+		nodeToUpdate.child("Year").first_child().set_value(to_string(year).c_str());
+		nodeToUpdate.child("Weight").first_child().set_value(to_string(weight).c_str());
 
 		doc.save_file(fileName.c_str(), PUGIXML_TEXT("  "));
 
