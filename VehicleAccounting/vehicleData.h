@@ -35,6 +35,8 @@ public:
 	void update(uint32_t, string, string, string, string, uint32_t, double);
 	//ѕроизводит удаление данных транспорта по id
 	void remove(uint32_t, string);
+	//¬озвращает десериализированую коллекцию транспорта
+	vector<VehicleData> loadVehicleData();
 	//ѕроизводит отображение данных транспортов с сортировкой по полю
 	void loadByField(uint32_t, string);
 	//ѕроизводит поиск по полю

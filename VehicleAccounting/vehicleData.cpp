@@ -61,7 +61,6 @@ double VehicleData::getWeight()
 	return weight_;
 }
 
-
 void VehicleData::setId(uint32_t id)
 {
 	this->id_ = id;
@@ -91,22 +90,18 @@ void VehicleData::getVehicleDataById(uint32_t id, string fileName)
 {
 	if (doc.load_file(fileName.c_str()))
 	{
-		string type;
-		string brand;
-		string model;
-		uint32_t year;
-		double weight;
-
 		pugi::xml_node nodeToDisplay = nodeFinder(id);
 
-		type = nodeToDisplay.child("Type").text().as_string();
-		brand = nodeToDisplay.child("Brand").text().as_string();
-		model = nodeToDisplay.child("Model").text().as_string();
-		year = nodeToDisplay.child("Year").text().as_int();
-		weight = nodeToDisplay.child("Weight").text().as_double();
+		VehicleData vehicle;
 
-		std::cout << "Тип транспортного средства: " << type << endl << "Бренд транспортного средства: " << brand << endl << "Модель транспортного средства: " << model << endl
-			<< "Год транспортного средства: " << year << endl << "Вес транспортного средства: " << weight << endl;
+		vehicle.type_ = nodeToDisplay.child("Type").text().as_string();
+		vehicle.brand_ = nodeToDisplay.child("Brand").text().as_string();
+		vehicle.model_ = nodeToDisplay.child("Model").text().as_string();
+		vehicle.year_ = nodeToDisplay.child("Year").text().as_int();
+		vehicle.weight_ = nodeToDisplay.child("Weight").text().as_double();
+
+		std::cout << "Тип транспортного средства: " << vehicle.type_ << endl << "Бренд транспортного средства: " << vehicle.brand_ << endl 
+			<< "Модель транспортного средства: " << vehicle.model_ << endl<< "Год транспортного средства: " << vehicle.year_ << endl << "Вес транспортного средства: " << vehicle.weight_ << endl;
 	}
 	else
 		cout << "Файл не найден" << endl;
@@ -197,7 +192,7 @@ void VehicleData::remove(uint32_t id, string fileName)
 		cout << "Файл не найден" << endl;
 }
 
-vector<VehicleData> loadVehicleData()
+vector<VehicleData> VehicleData::loadVehicleData()
 {
 	vector<VehicleData> vehicles;
 	VehicleData vehicleData;
