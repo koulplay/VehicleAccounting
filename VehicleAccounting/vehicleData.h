@@ -12,18 +12,6 @@ using namespace std;
 
 class VehicleData
 {
-private:
-	uint32_t id_ = 0;
-	string type_;
-	string brand_;
-	string model_;
-	uint32_t year_ = 0;
-	double weight_ = 0;
-
-	//Генерирует id
-	void generateId();
-	//Производит поиск тега в xml файле 
-	pugi::xml_node nodeFinder(uint32_t);
 public:
 	uint32_t getId();
 	string getType();
@@ -51,4 +39,16 @@ public:
 	void loadByField(uint32_t, string);
 	//Производит поиск по полю
 	void searchByField(uint32_t, string, string);
+private:
+	uint32_t id_ = 0;
+	string type_;
+	string brand_;
+	string model_;
+	uint32_t year_ = 0;
+	double weight_ = 0;
+
+	//Генерирует id
+	void generateId();
+	//Производит поиск тега в xml файле 
+	pugi::xml_node nodeFinder(uint32_t);
 };
