@@ -14,7 +14,7 @@ class VehicleData
 {
 public:
 	uint32_t getId();
-	string getType();
+	string getType();      
 	string getBrand();
 	string getModel();
 	uint32_t getYear();
