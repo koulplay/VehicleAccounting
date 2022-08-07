@@ -88,7 +88,7 @@ void addNewVehicleData()
 	cout << "Введите вес(кг) транспортного средства" << endl;
 	cin >> weight;
 
-	VehicleData *vehicle = new VehicleData;
+	VehicleData *vehicle = new VehicleData();
 	vehicle->save(fileName, type, brand, model, year, weight);
 	delete vehicle;
 }
@@ -101,8 +101,6 @@ void updateVehicleData()
 	string model;
 	uint32_t year;
 	double weight;
-
-	
 
 	cout << "Введите идентификатор транспорного средства для изменения данных: ";
 	cin >> id;
@@ -174,7 +172,7 @@ void searchByFieldVehicleData()
 	cout << "Введите слово: ";
 	cin >> searchWord;
 
-	VehicleData *vehicle = new VehicleData;
+	VehicleData *vehicle = new VehicleData();
 	vehicle->searchByField(sortType, fileName, searchWord);
 	delete vehicle;
 }
